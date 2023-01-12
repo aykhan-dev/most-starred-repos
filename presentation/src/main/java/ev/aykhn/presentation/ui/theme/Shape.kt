@@ -1,4 +1,4 @@
-package ev.aykhn.repos.ui.theme
+package ev.aykhn.presentation.ui.theme
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Shapes
