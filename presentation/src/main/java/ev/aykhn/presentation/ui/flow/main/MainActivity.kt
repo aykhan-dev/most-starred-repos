@@ -1,4 +1,4 @@
-package ev.aykhn.repos
+package ev.aykhn.presentation.ui.flow.main
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -10,13 +10,13 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import ev.aykhn.repos.ui.theme.MoststarredreposTheme
+import ev.aykhn.presentation.ui.theme.MostStarredReposTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MoststarredreposTheme {
+            MostStarredReposTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
@@ -37,7 +37,7 @@ fun Greeting(name: String) {
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    MoststarredreposTheme {
+    MostStarredReposTheme {
         Greeting("Android")
     }
 }
