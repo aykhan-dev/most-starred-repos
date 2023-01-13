@@ -4,9 +4,11 @@ package ev.aykhn.data.repositoryImpl
 
 import ev.aykhn.data.dataSource.local.ReposLocalDataSource
 import ev.aykhn.data.dataSource.remote.SearchRemoteDataSource
+import ev.aykhn.data.mapper.toEntity.toEntity
 import ev.aykhn.data.model.entity.RepoEntity
 import ev.aykhn.data.model.pojo.RepoPOJO
 import ev.aykhn.data.model.pojo.SearchResponsePOJO
+import ev.aykhn.data.model.pojo.UserPOJO
 import ev.aykhn.domain.repository.ReposRepository
 import io.mockk.*
 import io.mockk.impl.annotations.MockK
@@ -57,18 +59,32 @@ class ReposRepositoryImplTest {
 
     @Test
     fun `fetchRepos() should map pojos to entity and cache them`() = runTest {
+        val repoPOJO = RepoPOJO(
+            id = 0,
+            name = "test-name",
+            description = "test-description",
+            owner = UserPOJO(
+                id = 0,
+                username = "test-username",
+                avatarUrl = "test-user-avatar-url",
+            ),
+            starCount = 0,
+        )
+
         val response = SearchResponsePOJO(
             totalCount = 0,
             isIncompleteResult = false,
-            items = listOf<RepoPOJO>()
+            items = listOf(repoPOJO)
         )
+
+        val mappedPOJO = response.items.map { it.toEntity() }
 
         every { searchRemoteDataSource.getMostStarredRepos(any(), any()) } returns response
         coEvery { reposLocalDataSource.insertRepos(any()) } returns Unit
 
         repository.fetchRepos("2023-01-01", 1)
 
-        coVerify { reposLocalDataSource.insertRepos(emptyList()) }
+        coVerify { reposLocalDataSource.insertRepos(mappedPOJO) }
     }
 
 }
