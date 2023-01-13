@@ -2,6 +2,7 @@ plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
+    id 'kotlinx-serialization'
     id 'com.google.dagger.hilt.android'
 }
 
@@ -21,6 +22,13 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField "String", "BASE_URL", "\"https://api.github.com/\""
+            buildConfigField "int", "DATABASE_VERSION", "1"
+        }
+        debug {
+            debuggable true
+            buildConfigField "String", "BASE_URL", "\"https://api.github.com/\""
+            buildConfigField "int", "DATABASE_VERSION", "1"
         }
     }
     compileOptions {
@@ -44,11 +52,33 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.6.0'
     implementation 'com.google.android.material:material:1.7.0'
     testImplementation 'junit:junit:4.13.2'
+    testImplementation 'io.mockk:mockk:1.12.0'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 
     //Hilt
     implementation "com.google.dagger:hilt-android:2.44"
     kapt "com.google.dagger:hilt-compiler:2.44"
+
+    //Coroutines
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlin_version"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.2"
+
+    //Persistent storage
+    implementation "androidx.room:room-runtime:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
+    implementation "androidx.room:room-ktx:$room_version"
+
+    //Logger
+    implementation "com.jakewharton.timber:timber:$timber_version"
+
+    //Net client
+    implementation "com.squareup.retrofit2:retrofit:2.9.0"
+    implementation "com.squareup.okhttp3:okhttp:5.0.0-alpha.2"
+    implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.6'
+    implementation "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0"
+
+    //Serialization - KotlinX
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1"
 
 }
