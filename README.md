@@ -28,7 +28,7 @@ It's a simple native android project for demonstration of architectural and tech
 
 # features
 * App simply request for github repositories in descending order of start count
-* App retreives data in format of paged data with `10` `per_page` size
+* App retreives data in format of paged data with `10` `per_page` size for repositories `in last 30 days`
 * App caches retreived data in the local database and directly serves the data from there to UI
 * As a user, it's possible to see the `name`, `description`, `start-count`, `owner-name` and `owner-profile-image` in the UI
 
