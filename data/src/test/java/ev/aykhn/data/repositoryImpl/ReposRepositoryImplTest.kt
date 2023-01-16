@@ -4,13 +4,14 @@ package ev.aykhn.data.repositoryImpl
 
 import ev.aykhn.data.dataSource.local.ReposLocalDataSource
 import ev.aykhn.data.dataSource.remote.SearchRemoteDataSource
-import ev.aykhn.data.mapper.toEntity.toEntity
-import ev.aykhn.data.model.entity.RepoEntity
 import ev.aykhn.data.model.pojo.RepoPOJO
 import ev.aykhn.data.model.pojo.SearchResponsePOJO
-import ev.aykhn.data.model.pojo.UserPOJO
+import ev.aykhn.domain.model.Repo
 import ev.aykhn.domain.repository.ReposRepository
-import io.mockk.*
+import io.mockk.MockKAnnotations
+import io.mockk.coEvery
+import io.mockk.coVerify
+import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
@@ -19,14 +20,15 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
+import retrofit2.Response
 
 class ReposRepositoryImplTest {
 
     @MockK
-    lateinit var reposLocalDataSource: ReposLocalDataSource
+    lateinit var localReposDataSource: ReposLocalDataSource
 
     @MockK
-    lateinit var searchRemoteDataSource: SearchRemoteDataSource
+    lateinit var remoteDataSource: SearchRemoteDataSource
 
     private lateinit var repository: ReposRepository
 
@@ -34,57 +36,44 @@ class ReposRepositoryImplTest {
     fun setup() {
         MockKAnnotations.init(this)
         repository = ReposRepositoryImpl(
-            remoteDataSource = searchRemoteDataSource,
-            localDataSource = reposLocalDataSource,
+            localReposDataSource = localReposDataSource,
+            remoteDataSource = remoteDataSource,
         )
     }
 
     @Test
-    fun `getRepos() should map entities to domain models`() = runTest {
-        val entity = RepoEntity(
-            id = 1,
-            name = "test-name",
-            description = "test-description",
-            username = "test-username",
-            userAvatarUrl = "test-user-avatar-url",
-            starCount = 0,
-        )
+    fun `gives flow of repos directly from the local database`() = runTest {
+        every { localReposDataSource.getRepos() } returns flow { emit(emptyList()) }
 
-        every { reposLocalDataSource.getRepos() } returns flow { emit(listOf(entity)) }
+        val actual = repository.repos.first()
 
-        val domainModels = repository.repos.first()
-
-        assertEquals(1, domainModels.size)
+        assertEquals(emptyList<Repo>(), actual)
     }
 
     @Test
-    fun `fetchRepos() should map pojos to entity and cache them`() = runTest {
-        val repoPOJO = RepoPOJO(
-            id = 0,
-            name = "test-name",
-            description = "test-description",
-            owner = UserPOJO(
-                id = 0,
-                username = "test-username",
-                avatarUrl = "test-user-avatar-url",
-            ),
-            starCount = 0,
-        )
-
-        val response = SearchResponsePOJO(
-            totalCount = 0,
+    fun `fetches new page via increasing the index by one and caches the data`() = runTest {
+        val currentPageIndex = 0
+        val response = SearchResponsePOJO<RepoPOJO>(
+            totalCount = 10,
             isIncompleteResult = false,
-            items = listOf(repoPOJO)
+            items = emptyList(),
         )
 
-        val mappedPOJO = response.items.map { it.toEntity() }
+        coEvery {
+            remoteDataSource.getMostStarredRepos(
+                customQuery = any(),
+                sort = any(),
+                order = any(),
+                pageIndex = any(),
+            )
+        } returns Response.success(response)
 
-        every { searchRemoteDataSource.getMostStarredRepos(any(), any()) } returns response
-        coEvery { reposLocalDataSource.insertRepos(any()) } returns Unit
+        coEvery { localReposDataSource.insertRepos(any()) } returns Unit
 
-        repository.fetchRepos("2023-01-01", 1)
+        repository.fetch(currentPageIndex)
 
-        coVerify { reposLocalDataSource.insertRepos(mappedPOJO) }
+        coVerify { remoteDataSource.getMostStarredRepos(any(), any(), any(), any(), any()) }
+        coVerify { localReposDataSource.insertRepos(any()) }
     }
 
 }

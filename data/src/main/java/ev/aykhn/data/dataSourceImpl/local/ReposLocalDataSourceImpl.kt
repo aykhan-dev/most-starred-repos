@@ -14,7 +14,7 @@ abstract class ReposLocalDataSourceImpl : ReposLocalDataSource {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract override suspend fun insertRepos(items: List<RepoEntity>)
 
-    @Query("SELECT * FROM repoentity ORDER BY starCount DESC")
-    abstract override fun getRepos(): Flow<List<RepoEntity>>
+    @Query("SELECT * FROM repoentity ORDER BY starCount DESC, insertionTime")
+    abstract override fun getRepos(): Flow<List<RepoEntity>> // for descending and inserting order
 
 }

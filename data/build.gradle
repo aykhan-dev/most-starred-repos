@@ -58,14 +58,14 @@ dependencies {
     testImplementation 'androidx.test:core-ktx:1.5.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 
-    //Hilt
-    implementation "com.google.dagger:hilt-android:2.44"
-    kapt "com.google.dagger:hilt-compiler:2.44"
+//Hilt
+    implementation "com.google.dagger:hilt-android:$hilt_version"
+    kapt "com.google.dagger:hilt-compiler:$hilt_version"
 
     //Coroutines
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlin_version"
-    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.2"
-    androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.2"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlin_version"
+    androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlin_version"
 
     //Persistent storage
     implementation "androidx.room:room-runtime:$room_version"
@@ -77,12 +77,15 @@ dependencies {
     implementation "com.jakewharton.timber:timber:$timber_version"
 
     //Net client
-    implementation "com.squareup.retrofit2:retrofit:2.9.0"
-    implementation "com.squareup.okhttp3:okhttp:5.0.0-alpha.6"
-    implementation 'com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.6'
-    implementation "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0"
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
+    implementation "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:$retrofit_kotlinx_version"
 
     //Serialization - KotlinX
-    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1"
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:$kotlinx_version"
+
+    //ViewModel
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$viewmodel_ktx_version"
 
 }
