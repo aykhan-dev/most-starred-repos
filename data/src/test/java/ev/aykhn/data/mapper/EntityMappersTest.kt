@@ -9,7 +9,7 @@ class EntityMappersTest {
     @Test
     fun `mapping from RepoPOJO to RepoEntity should work properly`() {
         val repoPOJO = RepoPOJO.getDummy()
-        val repoEntity = repoPOJO.toEntity()
+        val repoEntity = repoPOJO.toEntity(pageIndex = 1)
         assert(repoPOJO.id == repoEntity.id)
     }
 

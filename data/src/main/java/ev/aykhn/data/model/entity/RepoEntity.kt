@@ -14,6 +14,8 @@ data class RepoEntity(
     val starCount: Int?,
     val username: String?,
     val userAvatarUrl: String?,
+    val insertionTime: Long,
+    val pageIndex: Int,
 ) {
     companion object {
         fun getDummy(): RepoEntity {
@@ -24,6 +26,8 @@ data class RepoEntity(
                 starCount = 1,
                 username = "dummy username",
                 userAvatarUrl = "dummy avatar url",
+                insertionTime = 0L,
+                pageIndex = 1,
             )
         }
     }

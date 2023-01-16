@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="message_no_results">No results</string>
+    <string name="label_unknown">Unknown</string>
+    <string name="label_created_by">Created by </string>
+    <string name="separator"> |</string>
+    <string name="label_stargazers">Stargazers: </string>
+</resources>

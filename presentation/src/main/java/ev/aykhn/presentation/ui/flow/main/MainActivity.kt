@@ -6,23 +6,28 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import ev.aykhn.presentation.ui.theme.MostStarredReposTheme
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import dagger.hilt.android.AndroidEntryPoint
+import ev.aykhn.domain.usecase.MostStarredReposUseCase
+import ev.aykhn.presentation.ui.flow.main.screens.mostStarredRepos.MostStarredReposScreen
+import ev.aykhn.presentation.ui.theme.AppTheme
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MostStarredReposTheme {
-                // A surface container using the 'background' color from the theme
+            AppTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    Greeting("Android")
+                     MainFlow()
                 }
             }
         }
@@ -30,14 +35,17 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
+fun MainFlow() {
+    AppTheme {
+        MainFlowRouter()
+    }
 }
 
-@Preview(showBackground = true)
 @Composable
-fun DefaultPreview() {
-    MostStarredReposTheme {
-        Greeting("Android")
+fun MainFlowRouter() {
+    val navController = rememberNavController()
+
+    NavHost(navController = navController, startDestination = "/") {
+        composable("/") { MostStarredReposScreen(navController) }
     }
 }

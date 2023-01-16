@@ -11,5 +11,6 @@ fun RepoEntity.toDomain(): Repo {
         starCount = starCount,
         username = username,
         userAvatarUrl = userAvatarUrl,
+        pageIndex = pageIndex,
     )
 }

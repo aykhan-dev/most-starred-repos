@@ -7,4 +7,5 @@ data class Repo(
     val starCount: Int?,
     val username: String?,
     val userAvatarUrl: String?,
+    val pageIndex: Int,
 )

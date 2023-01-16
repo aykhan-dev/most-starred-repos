@@ -1,8 +1,9 @@
 package ev.aykhn.data.model.pojo
 
 import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-@kotlinx.serialization.Serializable
+@Serializable
 data class RepoPOJO(
     @SerialName("id") val id: Long,
     @SerialName("name") val name: String?,

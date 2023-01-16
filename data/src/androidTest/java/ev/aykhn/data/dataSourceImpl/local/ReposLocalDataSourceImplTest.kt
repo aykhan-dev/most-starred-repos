@@ -1,4 +1,4 @@
-@file:OptIn(ExperimentalCoroutinesApi::class)
+@file:Suppress("OPT_IN_USAGE")
 
 package ev.aykhn.data.dataSourceImpl.local
 
@@ -6,7 +6,6 @@ import androidx.room.Room
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.runner.AndroidJUnit4
 import ev.aykhn.data.model.entity.RepoEntity
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.junit.After
@@ -35,22 +34,13 @@ class ReposLocalDataSourceImplTest {
     fun `reposDao should cache items safely`() = runTest {
         val reposDao = inMemoryDatabase.reposDao
 
-        val insertedItems = listOf(
-            RepoEntity(
-                id = 0,
-                name = "",
-                description = "",
-                starCount = 0,
-                username = "",
-                userAvatarUrl = "",
-            )
-        )
+        val insertedItems = listOf(RepoEntity.getDummy())
 
         reposDao.insertRepos(insertedItems)
 
-        val cachedItems = reposDao.getRepos().first()
+        val actual = reposDao.getRepos().first()
 
-        assertEquals(insertedItems, cachedItems)
+        assertEquals(insertedItems, actual)
     }
 
 }
