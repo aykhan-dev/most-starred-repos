@@ -6,6 +6,7 @@ It's a simple native android project for demonstration of architectural and tech
 * As a design pattern, `MVVM` is used
 * Whole project splitted into several layers, such as 1.`view` 2.`viewModel` 3.`use case` 4.`repository` 5.`data source`;
 * For UI construction, the declarative way of `Jetpack Compose` is preferred
+* Well tested by Unit Tests for each main layer
 
 # used-techs
 * `Hilt DI`
@@ -18,6 +19,8 @@ It's a simple native android project for demonstration of architectural and tech
 * `Kotlin Coroutines`
 * `Room persistence library`
 * `Timber Logger`
+* `JUnit`
+* `Mockito`
 
 # used-3rd-party-libs
 * `Retrofit` (making network requests)
